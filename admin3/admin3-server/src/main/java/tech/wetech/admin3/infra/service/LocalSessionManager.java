@@ -112,7 +112,7 @@ public class LocalSessionManager implements SessionManager {
       UserCredential credential = session.getCredential();
       User user = credential.getUser();
       List<Role> roleUsers = roleService.findRoleUsers(user.getId());
-      UserinfoDTO userinfo = new UserinfoDTO(session.getToken(), user.getState(),user.getOrganization(),user.getId(), user.getUsername(), user.getAvatar(), new UserinfoDTO.Credential(credential.getIdentifier(), credential.getIdentityType()), user.findPermissions(),roleUsers);
+      UserinfoDTO userinfo = new UserinfoDTO(session.getToken(),user.getType(), user.getState(),user.getOrganization(),user.getId(), user.getUsername(), user.getAvatar(), new UserinfoDTO.Credential(credential.getIdentifier(), credential.getIdentityType()), user.findPermissions(),roleUsers);
       session.setData(JsonUtils.stringify(userinfo));
       sessionRepository.saveAndFlush(session);
     });

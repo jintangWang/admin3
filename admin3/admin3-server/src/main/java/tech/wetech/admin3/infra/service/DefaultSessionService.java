@@ -56,7 +56,7 @@ public class DefaultSessionService implements SessionService {
       }
       String token = UUID.randomUUID().toString().replace("-", "");
       List<Role> roleUsers = roleService.findRoleUsers(user.getId());
-      UserinfoDTO userinfoEvent = new UserinfoDTO(token,user.getState(),user.getOrganization(), user.getId(), user.getUsername(), user.getAvatar(), new UserinfoDTO.Credential(credential.getIdentifier(), credential.getIdentityType()), user.findPermissions(),roleUsers);
+      UserinfoDTO userinfoEvent = new UserinfoDTO(token,user.getType(),user.getState(),user.getOrganization(), user.getId(), user.getUsername(), user.getAvatar(), new UserinfoDTO.Credential(credential.getIdentifier(), credential.getIdentityType()), user.findPermissions(),roleUsers);
       sessionManager.store(token, credential, userinfoEvent);
       SessionItemHolder.setItem(Constants.SESSION_CURRENT_USER, userinfoEvent);
       DomainEventPublisher.instance().publish(new UserLoggedIn(userinfoEvent, getClientIP()));
