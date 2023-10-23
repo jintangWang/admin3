@@ -2,6 +2,7 @@ package tech.wetech.admin3.sys.service;
 
 import org.springframework.stereotype.Service;
 import tech.wetech.admin3.sys.service.dto.UserinfoDTO;
+import tech.wetech.admin3.sys.service.dto.UserinfoDTOV2;
 
 /**
  * @author cjbi
@@ -9,7 +10,7 @@ import tech.wetech.admin3.sys.service.dto.UserinfoDTO;
 @Service
 public interface SessionService {
 
-  UserinfoDTO login(String username, String password);
+  UserinfoDTOV2 login(String username, String password);
 
   void logout(String token);
 

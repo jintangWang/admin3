@@ -100,4 +100,10 @@ public class RoleService {
       .collect(Collectors.toList()),
       page.getTotalElements());
   }
+
+  public List<Role> findRoleUsers(Long userById) {
+    List<Role> roles = roleRepository.roleById(userById);
+    return roles;
+  }
+
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import tech.wetech.admin3.sys.service.SessionService;
 import tech.wetech.admin3.sys.service.dto.UserinfoDTO;
+import tech.wetech.admin3.sys.service.dto.UserinfoDTOV2;
 
 /**
  * @author cjbi
@@ -25,7 +26,7 @@ public class LoginController {
   }
 
   @PostMapping("/login")
-  private ResponseEntity<UserinfoDTO> login(@RequestBody @Valid LoginRequest request) {
+  private ResponseEntity<UserinfoDTOV2> login(@RequestBody @Valid LoginRequest request) {
     return ResponseEntity.ok(sessionService.login(request.username(), request.password()));
   }
 
