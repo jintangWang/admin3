@@ -60,7 +60,7 @@ public class LoginController {
   public ResponseEntity<UserinfoDTO> register(@RequestBody @Valid LoginRequest request) {
     Organization organization = new Organization();
     organization.setId(1L);
-    userService.createUser(request.username(), null, User.Gender.MALE, User.State.NORMAL, organization);
+    userService.createUser(request.username(), null, User.Gender.MALE, User.State.NORMAL, organization, request.type);
     UserCredential userCredential = new UserCredential();
     userCredential.setIdentifier(request.username());
     userCredential.setIdentityType(UserCredential.IdentityType.PASSWORD);
@@ -72,7 +72,7 @@ public class LoginController {
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
-  record LoginRequest(@NotBlank String username, @NotBlank String password) {
+  record LoginRequest(@NotBlank String username, @NotBlank String password,String type) {
   }
 
 

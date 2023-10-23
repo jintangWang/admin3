@@ -41,7 +41,7 @@ public class UserController {
   @PostMapping
   public ResponseEntity<User> createUser(@RequestBody @Valid CreateUserRequest request) {
     Organization organization = organizationService.findOrganization(request.organizationId());
-    return new ResponseEntity<>(userService.createUser(request.username(), request.avatar(), request.gender(), User.State.NORMAL, organization), HttpStatus.CREATED);
+    return new ResponseEntity<>(userService.createUser(request.username(), request.avatar(), request.gender(), User.State.NORMAL, organization,null), HttpStatus.CREATED);
   }
 
   @RequiresPermissions("user:update")

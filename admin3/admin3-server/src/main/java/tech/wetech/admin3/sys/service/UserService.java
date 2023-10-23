@@ -37,7 +37,7 @@ public class UserService {
   }
 
   @Transactional
-  public User createUser(String username, String avatar, User.Gender gender, User.State state, Organization organization) {
+  public User createUser(String username, String avatar, User.Gender gender, User.State state, Organization organization, String type) {
     User user = new User();
     user.setUsername(username);
     user.setAvatar(avatar);
@@ -45,6 +45,7 @@ public class UserService {
     user.setState(state);
     user.setCreatedTime(LocalDateTime.now());
     user.setOrganization(organization);
+    user.setType(type);
     user = userRepository.save(user);
     DomainEventPublisher.instance().publish(new UserCreated(user));
     return user;
