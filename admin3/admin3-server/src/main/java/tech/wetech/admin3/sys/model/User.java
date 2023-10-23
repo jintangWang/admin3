@@ -41,6 +41,13 @@ public class User extends BaseEntity {
     inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
   private Set<Role> roles = new LinkedHashSet<>();
 
+
+  @ManyToMany(fetch = LAZY, cascade = CascadeType.DETACH)
+  @JoinTable(name = "label_user",
+          joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+          inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+  private Set<Label> labels = new LinkedHashSet<>();
+
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "id", orphanRemoval = true)
   private Set<UserCredential> credentials = new LinkedHashSet<>();
 
@@ -159,5 +166,13 @@ public class User extends BaseEntity {
 
   public void setType(String type) {
     this.type = type;
+  }
+
+  public Set<Label> getLabels() {
+    return labels;
+  }
+
+  public void setLabels(Set<Label> labels) {
+    this.labels = labels;
   }
 }
