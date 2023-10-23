@@ -10,7 +10,7 @@ import tech.wetech.admin3.sys.service.dto.UserinfoDTOV2;
 @Service
 public interface SessionService {
 
-  UserinfoDTOV2 login(String username, String password);
+  UserinfoDTO login(String username, String password);
 
   void logout(String token);
 

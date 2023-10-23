@@ -26,7 +26,7 @@ public class LoginController {
   }
 
   @PostMapping("/login")
-  private ResponseEntity<UserinfoDTOV2> login(@RequestBody @Valid LoginRequest request) {
+  private ResponseEntity<UserinfoDTO> login(@RequestBody @Valid LoginRequest request) {
     return ResponseEntity.ok(sessionService.login(request.username(), request.password()));
   }
 

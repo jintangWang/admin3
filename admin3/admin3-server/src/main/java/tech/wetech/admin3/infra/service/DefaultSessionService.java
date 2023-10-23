@@ -46,7 +46,7 @@ public class DefaultSessionService implements SessionService {
 
 
   @Override
-  public UserinfoDTOV2 login(String username, String password) {
+  public UserinfoDTO login(String username, String password) {
     UserCredential credential = userCredentialRepository.findCredential(username, PASSWORD)
       .orElseThrow(() -> new UserException(CommonResultStatus.UNAUTHORIZED, "密码不正确"));
     if (credential.doCredentialMatch(password)) {
@@ -56,12 +56,11 @@ public class DefaultSessionService implements SessionService {
       }
       String token = UUID.randomUUID().toString().replace("-", "");
       List<Role> roleUsers = roleService.findRoleUsers(user.getId());
-      UserinfoDTOV2 userinfo = new UserinfoDTOV2(token, user.getId(), user.getUsername(), user.getAvatar(), new UserinfoDTOV2.Credential(credential.getIdentifier(), credential.getIdentityType()), user.findPermissions(),roleUsers);
-      UserinfoDTO userinfoEvent = new UserinfoDTO(token, user.getId(), user.getUsername(), user.getAvatar(), new UserinfoDTO.Credential(credential.getIdentifier(), credential.getIdentityType()), user.findPermissions());
+      UserinfoDTO userinfoEvent = new UserinfoDTO(token,user.getState(),user.getOrganization(), user.getId(), user.getUsername(), user.getAvatar(), new UserinfoDTO.Credential(credential.getIdentifier(), credential.getIdentityType()), user.findPermissions(),roleUsers);
       sessionManager.store(token, credential, userinfoEvent);
       SessionItemHolder.setItem(Constants.SESSION_CURRENT_USER, userinfoEvent);
       DomainEventPublisher.instance().publish(new UserLoggedIn(userinfoEvent, getClientIP()));
-      return userinfo;
+      return userinfoEvent;
     } else {
       throw new UserException(CommonResultStatus.UNAUTHORIZED, "密码不正确");
     }
