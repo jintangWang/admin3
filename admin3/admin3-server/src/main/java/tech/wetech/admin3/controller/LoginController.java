@@ -55,7 +55,6 @@ public class LoginController {
     return ResponseEntity.ok(sessionService.getLoginUserInfo(token));
   }
 
-  @SecurityRequirement(name = "bearerAuth")
   @GetMapping("/register")
   public ResponseEntity<UserinfoDTO> register(@RequestBody @Valid LoginRequest request) {
     Organization organization = new Organization();
