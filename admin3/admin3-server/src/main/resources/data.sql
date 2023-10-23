@@ -117,13 +117,14 @@ INSERT INTO user_credential (id, credential, identifier, identity_type, user_id)
 INSERT INTO user_credential (id, credential, identifier, identity_type, user_id) VALUES (2, '9c0967753a201ecde21ef29efa514761', 'employee', 0, 2);
 INSERT INTO user_credential (id, credential, identifier, identity_type, user_id) VALUES (3, 'fe4ceeb01d43a6c29d8f4fe93313c6c1', 'guest', 0, 3);
 
-INSERT INTO organization (id, name, parent_ids, type, parent_id) VALUES (1, '根节点', '/', 0, null);
+INSERT INTO organization (id, name, parent_ids, type, parent_id) VALUES (0, '根节点', '/', 0, null);
+INSERT INTO organization (id, name, parent_ids, type, parent_id) VALUES (1, '管理员', '/1/', 0, 1);
 INSERT INTO organization (id, name, parent_ids, type, parent_id) VALUES (2, 'VIP', '/1/', 0, 1);
 INSERT INTO organization (id, name, parent_ids, type, parent_id) VALUES (3, '普通用户', '/1/', 0, 1);
-INSERT INTO organization (id, name, parent_ids, type, parent_id) VALUES (4, '游客', '/1/', 0, 1);
+INSERT INTO organization (id, name, parent_ids, type, parent_id) VALUES (4, '游客', '/1/', 0, 0);
 
-INSERT INTO role (id, available, description, name) VALUES (1, true, '超级管理员可以对企业内的所有用户进行管理，请谨慎修改超管权限', '超级管理员');
-INSERT INTO role (id, available, description, name) VALUES (2, true, '项目开发人员', '开发者');
+INSERT INTO role (id, available, description, name) VALUES (1, true, '管理员可以对企业内的所有用户进行管理，请谨慎修改管理员权限', '管理员');
+INSERT INTO role (id, available, description, name) VALUES (2, true, 'VIP用户', 'VIP');
 INSERT INTO role (id, available, description, name) VALUES (3, true, '普通的用户', '普通用户');
 INSERT INTO role (id, available, description, name) VALUES (4, false, '只能查看的角色', '游客');
 
@@ -131,7 +132,6 @@ INSERT INTO user_role (user_id, role_id) VALUES (1, 1);
 INSERT INTO user_role (user_id, role_id) VALUES (2, 2);
 INSERT INTO user_role (user_id, role_id) VALUES (3, 4);
 INSERT INTO user_role (user_id, role_id) VALUES (202, 2);
-INSERT INTO user_role (user_id, role_id) VALUES (203, 1);
 INSERT INTO user_role (user_id, role_id) VALUES (203, 3);
 INSERT INTO user_role (user_id, role_id) VALUES (204, 3);
 INSERT INTO user_role (user_id, role_id) VALUES (205, 3);
