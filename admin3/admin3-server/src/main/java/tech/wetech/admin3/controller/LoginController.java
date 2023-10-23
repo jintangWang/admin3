@@ -10,12 +10,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import tech.wetech.admin3.common.SecurityUtil;
 import tech.wetech.admin3.sys.model.Organization;
 import tech.wetech.admin3.sys.model.User;
+import tech.wetech.admin3.sys.model.UserCredential;
 import tech.wetech.admin3.sys.service.SessionService;
 import tech.wetech.admin3.sys.service.UserService;
 import tech.wetech.admin3.sys.service.dto.UserinfoDTO;
-import tech.wetech.admin3.sys.service.dto.UserinfoDTOV2;
+
+import java.security.NoSuchAlgorithmException;
 
 /**
  * @author cjbi
@@ -27,7 +30,7 @@ public class LoginController {
 
   private final UserService userService;
 
-  public LoginController(SessionService sessionService,UserService userService) {
+  public LoginController(SessionService sessionService, UserService userService) {
     this.sessionService = sessionService;
     this.userService = userService;
   }
@@ -58,6 +61,14 @@ public class LoginController {
     Organization organization = new Organization();
     organization.setId(1L);
     userService.createUser(request.username(), null, User.Gender.MALE, User.State.NORMAL, organization);
+    UserCredential userCredential = new UserCredential();
+    userCredential.setIdentifier(request.username());
+    userCredential.setIdentityType(UserCredential.IdentityType.PASSWORD);
+    try {
+      userCredential.setCredential(SecurityUtil.md5(request.username(), request.password));
+    } catch (NoSuchAlgorithmException e) {
+      throw new RuntimeException("加密失败：：：：{}", e);
+    }
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
 

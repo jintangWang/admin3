@@ -32,6 +32,9 @@ public class User extends BaseEntity {
   @Column
   private LocalDateTime createdTime;
 
+  @Column
+  private String type;
+
   @ManyToMany(fetch = LAZY, cascade = CascadeType.DETACH)
   @JoinTable(name = "user_role",
     joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -148,5 +151,13 @@ public class User extends BaseEntity {
 
   public void setOrganization(Organization organization) {
     this.organization = organization;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
   }
 }
