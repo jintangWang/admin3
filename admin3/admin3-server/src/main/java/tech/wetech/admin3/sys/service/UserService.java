@@ -39,7 +39,7 @@ public class UserService {
   }
 
   @Transactional
-  public User createUser(String username, String avatar, User.Gender gender, User.State state, Organization organization, String type, Set<Label> labels) {
+  public User createUserLabel(String username, String avatar, User.Gender gender, User.State state, Organization organization, String type, Set<Label> labels) {
     User user = new User();
     user.setUsername(username);
     user.setAvatar(avatar);
@@ -49,6 +49,21 @@ public class UserService {
     user.setOrganization(organization);
     user.setType(type);
     user.setLabels(labels);
+    user = userRepository.save(user);
+    DomainEventPublisher.instance().publish(new UserCreated(user));
+    return user;
+  }
+
+  @Transactional
+  public User createUser(String username, String avatar, User.Gender gender, User.State state, Organization organization, String type) {
+    User user = new User();
+    user.setUsername(username);
+    user.setAvatar(avatar);
+    user.setGender(gender);
+    user.setState(state);
+    user.setCreatedTime(LocalDateTime.now());
+    user.setOrganization(organization);
+    user.setType(type);
     user = userRepository.save(user);
     DomainEventPublisher.instance().publish(new UserCreated(user));
     return user;

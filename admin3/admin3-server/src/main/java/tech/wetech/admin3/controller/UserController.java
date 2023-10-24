@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tech.wetech.admin3.common.CollectionUtils;
 import tech.wetech.admin3.common.authz.RequiresPermissions;
 import tech.wetech.admin3.sys.model.Label;
 import tech.wetech.admin3.sys.model.Organization;
@@ -44,14 +45,20 @@ public class UserController {
   @PostMapping
   public ResponseEntity<User> createUser(@RequestBody @Valid CreateUserRequest request) {
     Organization organization = organizationService.findOrganization(request.organizationId());
-    return new ResponseEntity<>(userService.createUser(request.username(), request.avatar(), request.gender(), User.State.NORMAL, organization,null,request.label()), HttpStatus.CREATED);
+    User user = null;
+    if (CollectionUtils.isEmpty(request.label())) {
+      user = userService.createUser(request.username(), null, User.Gender.MALE, User.State.NORMAL, organization, null);
+    } else {
+      user = userService.createUserLabel(request.username(), null, User.Gender.MALE, User.State.NORMAL, organization, null, request.label());
+    }
+    return new ResponseEntity<>(user,HttpStatus.CREATED);
   }
 
   @RequiresPermissions("user:update")
   @PutMapping("/{userId}")
   public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody @Valid UpdateUserRequest request) {
     Organization organization = organizationService.findOrganization(request.organizationId());
-    return ResponseEntity.ok(userService.updateUser(request.type(),userId, request.avatar(), request.gender(), User.State.NORMAL, organization));
+    return ResponseEntity.ok(userService.updateUser(request.type(), userId, request.avatar(), request.gender(), User.State.NORMAL, organization));
   }
 
   @RequiresPermissions("user:update")
