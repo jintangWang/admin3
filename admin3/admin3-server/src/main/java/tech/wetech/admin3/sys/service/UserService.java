@@ -10,6 +10,7 @@ import tech.wetech.admin3.sys.event.UserCreated;
 import tech.wetech.admin3.sys.event.UserDeleted;
 import tech.wetech.admin3.sys.event.UserUpdated;
 import tech.wetech.admin3.sys.exception.UserException;
+import tech.wetech.admin3.sys.model.Label;
 import tech.wetech.admin3.sys.model.Organization;
 import tech.wetech.admin3.sys.model.User;
 import tech.wetech.admin3.sys.repository.UserRepository;
@@ -18,6 +19,7 @@ import tech.wetech.admin3.sys.service.dto.PageDTO;
 import tech.wetech.admin3.sys.service.dto.UserinfoDTO;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -37,7 +39,7 @@ public class UserService {
   }
 
   @Transactional
-  public User createUser(String username, String avatar, User.Gender gender, User.State state, Organization organization, String type) {
+  public User createUser(String username, String avatar, User.Gender gender, User.State state, Organization organization, String type, Set<Label> labels) {
     User user = new User();
     user.setUsername(username);
     user.setAvatar(avatar);
@@ -46,6 +48,7 @@ public class UserService {
     user.setCreatedTime(LocalDateTime.now());
     user.setOrganization(organization);
     user.setType(type);
+    user.setLabels(labels);
     user = userRepository.save(user);
     DomainEventPublisher.instance().publish(new UserCreated(user));
     return user;

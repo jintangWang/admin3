@@ -9,11 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.wetech.admin3.common.authz.RequiresPermissions;
+import tech.wetech.admin3.sys.model.Label;
 import tech.wetech.admin3.sys.model.Organization;
 import tech.wetech.admin3.sys.model.User;
 import tech.wetech.admin3.sys.service.OrganizationService;
 import tech.wetech.admin3.sys.service.UserService;
 import tech.wetech.admin3.sys.service.dto.PageDTO;
+
+import java.util.Set;
 
 /**
  * @author cjbi
@@ -41,7 +44,7 @@ public class UserController {
   @PostMapping
   public ResponseEntity<User> createUser(@RequestBody @Valid CreateUserRequest request) {
     Organization organization = organizationService.findOrganization(request.organizationId());
-    return new ResponseEntity<>(userService.createUser(request.username(), request.avatar(), request.gender(), User.State.NORMAL, organization,null), HttpStatus.CREATED);
+    return new ResponseEntity<>(userService.createUser(request.username(), request.avatar(), request.gender(), User.State.NORMAL, organization,null,request.label()), HttpStatus.CREATED);
   }
 
   @RequiresPermissions("user:update")
@@ -71,7 +74,7 @@ public class UserController {
   }
 
   record CreateUserRequest(@NotBlank String username, @NotNull User.Gender gender,
-                           @NotBlank String avatar, Long organizationId) {
+                           @NotBlank String avatar, Long organizationId, Set<Label> label) {
   }
 
   record UpdateUserRequest(@NotNull User.Gender gender,

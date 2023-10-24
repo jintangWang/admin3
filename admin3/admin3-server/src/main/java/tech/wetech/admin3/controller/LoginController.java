@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import tech.wetech.admin3.common.SecurityUtil;
+import tech.wetech.admin3.sys.model.Label;
 import tech.wetech.admin3.sys.model.Organization;
 import tech.wetech.admin3.sys.model.User;
 import tech.wetech.admin3.sys.model.UserCredential;
@@ -19,6 +20,8 @@ import tech.wetech.admin3.sys.service.UserService;
 import tech.wetech.admin3.sys.service.dto.UserinfoDTO;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author cjbi
@@ -59,7 +62,7 @@ public class LoginController {
   public ResponseEntity<UserinfoDTO> register(@RequestBody @Valid LoginRequest request) {
     Organization organization = new Organization();
     organization.setId(1L);
-    userService.createUser(request.username(), null, User.Gender.MALE, User.State.NORMAL, organization, request.type);
+    userService.createUser(request.username(), null, User.Gender.MALE, User.State.NORMAL, organization, request.type(),request.label());
     UserCredential userCredential = new UserCredential();
     userCredential.setIdentifier(request.username());
     userCredential.setIdentityType(UserCredential.IdentityType.PASSWORD);
@@ -71,7 +74,7 @@ public class LoginController {
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
-  record LoginRequest(@NotBlank String username, @NotBlank String password,String type) {
+  record LoginRequest(@NotBlank String username, @NotBlank String password, String type, Set<Label> label) {
   }
 
 
