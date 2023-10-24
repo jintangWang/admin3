@@ -45,7 +45,7 @@ public class User extends BaseEntity {
   @ManyToMany(fetch = LAZY, cascade = CascadeType.DETACH)
   @JoinTable(name = "label_user",
           joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-          inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+          inverseJoinColumns = @JoinColumn(name = "label_id", referencedColumnName = "id"))
   private Set<Label> labels = new LinkedHashSet<>();
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "id", orphanRemoval = true)
