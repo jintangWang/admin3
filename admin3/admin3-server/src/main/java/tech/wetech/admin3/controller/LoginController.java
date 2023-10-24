@@ -58,7 +58,7 @@ public class LoginController {
     return ResponseEntity.ok(sessionService.getLoginUserInfo(token));
   }
 
-  @GetMapping("/register")
+  @PostMapping("/register")
   public ResponseEntity<UserinfoDTO> register(@RequestBody @Valid LoginRequest request) {
     Organization organization = new Organization();
     organization.setId(1L);
