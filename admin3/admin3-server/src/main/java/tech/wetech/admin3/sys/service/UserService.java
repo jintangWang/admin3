@@ -133,4 +133,8 @@ public class UserService {
     userRepository.delete(user);
     DomainEventPublisher.instance().publish(new UserDeleted(user));
   }
+
+  public List<User> findUsersByName(String name) {
+    return userRepository.finduserByName(name);
+  }
 }

@@ -9,9 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tech.wetech.admin3.common.authz.RequiresPermissions;
+import tech.wetech.admin3.sys.model.Image;
 import tech.wetech.admin3.sys.model.StorageConfig;
 import tech.wetech.admin3.sys.model.StorageConfig.Type;
 import tech.wetech.admin3.sys.model.StorageFile;
+import tech.wetech.admin3.sys.service.ImageService;
 import tech.wetech.admin3.sys.service.StorageService;
 
 import java.io.IOException;
@@ -28,8 +30,11 @@ public class StorageController {
 
   private final StorageService storageService;
 
-  public StorageController(StorageService storageService) {
+  private final ImageService imageService;
+
+  public StorageController(StorageService storageService,ImageService imageService) {
     this.storageService = storageService;
+    this.imageService = imageService;
   }
 
   @GetMapping("/configs")
@@ -90,11 +95,13 @@ public class StorageController {
 
   @PostMapping("/upload")
   public ResponseEntity<List<UploadResponse>> upload(@RequestParam(value = "storageId", required = false) String storageId,
-                                                     @RequestParam("files") MultipartFile[] files) throws IOException {
+                                                     @RequestParam("files") MultipartFile[] files,
+                                                     @RequestBody Image image) throws IOException {
     List<UploadResponse> responses = new ArrayList<>();
     for (MultipartFile file : files) {
       String originalFilename = file.getOriginalFilename();
       String url = storageService.store(storageId, file.getInputStream(), file.getSize(), file.getContentType(), originalFilename);
+      imageService.createImage(image.getTitle(),image.getOverview(),image.getUrl(),image.getPosterPath(),image.getLabels());
       responses.add(new UploadResponse(url));
     }
     return ResponseEntity.ok(responses);

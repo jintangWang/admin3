@@ -17,6 +17,7 @@ import tech.wetech.admin3.sys.service.OrganizationService;
 import tech.wetech.admin3.sys.service.UserService;
 import tech.wetech.admin3.sys.service.dto.PageDTO;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -39,6 +40,11 @@ public class UserController {
   @GetMapping
   public ResponseEntity<PageDTO<User>> findUsers(Pageable pageable, User user) {
     return ResponseEntity.ok(userService.findUsers(pageable, user));
+  }
+
+  @GetMapping("/{name}")
+  public ResponseEntity<List<User>> findUsers(@PathVariable("name") String name) {
+    return ResponseEntity.ok(userService.findUsersByName(name));
   }
 
   @RequiresPermissions("user:create")
