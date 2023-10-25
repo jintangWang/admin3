@@ -21,5 +21,5 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
   Set<Image> findByIds(Set<Long> imageIds);
 
   @Query("select distinct r FROM Image r join r.labels u where u.id in(:labelIds)")
-  Page<Image> findImages(List<Long> labelIds);
+  List<Image> findImages(List<Long> labelIds);
 }

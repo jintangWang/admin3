@@ -72,7 +72,7 @@ public class ImageService {
   }
 
 
-  public Page<Image> findImages(List<Long> labelIds) {
+  public List<Image> findImages(List<Long> labelIds) {
     return imageRepository.findImages(labelIds);
   }
 }

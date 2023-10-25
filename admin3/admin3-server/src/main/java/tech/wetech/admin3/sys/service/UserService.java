@@ -137,4 +137,10 @@ public class UserService {
   public List<User> findUsersByName(String name) {
     return userRepository.finduserByName(name);
   }
+
+  public void updateUserCount(Long userId) {
+    User user = findUserById(userId);
+    user.setImageCount(user.getImageCount()+1);
+    user = userRepository.save(user);
+  }
 }

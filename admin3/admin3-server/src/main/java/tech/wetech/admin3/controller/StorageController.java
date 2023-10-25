@@ -13,8 +13,10 @@ import tech.wetech.admin3.sys.model.Image;
 import tech.wetech.admin3.sys.model.StorageConfig;
 import tech.wetech.admin3.sys.model.StorageConfig.Type;
 import tech.wetech.admin3.sys.model.StorageFile;
+import tech.wetech.admin3.sys.model.User;
 import tech.wetech.admin3.sys.service.ImageService;
 import tech.wetech.admin3.sys.service.StorageService;
+import tech.wetech.admin3.sys.service.UserService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,9 +34,12 @@ public class StorageController {
 
   private final ImageService imageService;
 
-  public StorageController(StorageService storageService,ImageService imageService) {
+  private final UserService userService;
+
+  public StorageController(StorageService storageService, ImageService imageService, UserService userService) {
     this.storageService = storageService;
     this.imageService = imageService;
+    this.userService = userService;
   }
 
   @GetMapping("/configs")
@@ -96,12 +101,14 @@ public class StorageController {
   @PostMapping("/upload")
   public ResponseEntity<List<UploadResponse>> upload(@RequestParam(value = "storageId", required = false) String storageId,
                                                      @RequestParam("files") MultipartFile[] files,
-                                                     @RequestBody Image image) throws IOException {
+                                                     @RequestBody Image image,
+                                                     @RequestBody User user) throws IOException {
     List<UploadResponse> responses = new ArrayList<>();
     for (MultipartFile file : files) {
       String originalFilename = file.getOriginalFilename();
       String url = storageService.store(storageId, file.getInputStream(), file.getSize(), file.getContentType(), originalFilename);
-      imageService.createImage(image.getTitle(),image.getOverview(),image.getUrl(),image.getPosterPath(),image.getLabels());
+      imageService.createImage(image.getTitle(), image.getOverview(), image.getUrl(), image.getPosterPath(), image.getLabels());
+      userService.updateUserCount(user.getId());
       responses.add(new UploadResponse(url));
     }
     return ResponseEntity.ok(responses);

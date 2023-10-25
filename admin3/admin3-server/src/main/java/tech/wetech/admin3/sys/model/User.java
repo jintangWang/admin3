@@ -35,6 +35,9 @@ public class User extends BaseEntity {
   @Column
   private String type;
 
+  @Column
+  private Long imageCount;
+
   @ManyToMany(fetch = LAZY, cascade = CascadeType.DETACH)
   @JoinTable(name = "user_role",
     joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -174,5 +177,13 @@ public class User extends BaseEntity {
 
   public void setLabels(Set<Label> labels) {
     this.labels = labels;
+  }
+
+  public Long getImageCount() {
+    return imageCount;
+  }
+
+  public void setImageCount(Long imageCount) {
+    this.imageCount = imageCount;
   }
 }
