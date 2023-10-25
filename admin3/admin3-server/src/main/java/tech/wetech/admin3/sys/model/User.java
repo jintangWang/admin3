@@ -36,7 +36,7 @@ public class User extends BaseEntity {
   private String type;
 
   @Column
-  private Long imageCount;
+  private Long imageCount = 0L;
 
   @ManyToMany(fetch = LAZY, cascade = CascadeType.DETACH)
   @JoinTable(name = "user_role",
