@@ -7,11 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tech.wetech.admin3.common.JsonUtils;
-import tech.wetech.admin3.sys.model.Role;
-import tech.wetech.admin3.sys.model.Session;
-import tech.wetech.admin3.sys.model.User;
-import tech.wetech.admin3.sys.model.UserCredential;
+import tech.wetech.admin3.sys.model.*;
 import tech.wetech.admin3.sys.repository.SessionRepository;
+import tech.wetech.admin3.sys.service.LabelService;
 import tech.wetech.admin3.sys.service.RoleService;
 import tech.wetech.admin3.sys.service.dto.UserinfoDTO;
 
@@ -36,6 +34,8 @@ public class LocalSessionManager implements SessionManager {
 
   private final RoleService roleService;
 
+  private final LabelService labelService;
+
   private final Logger log = LoggerFactory.getLogger(getClass());
 
   private final Cache<String, Session> cache = Caffeine.newBuilder()
@@ -45,9 +45,10 @@ public class LocalSessionManager implements SessionManager {
 
   private final ScheduledExecutorService sessionCheckExecutor = new ScheduledThreadPoolExecutor(1);
 
-  public LocalSessionManager(SessionRepository sessionRepository,RoleService roleService) {
+  public LocalSessionManager(SessionRepository sessionRepository, RoleService roleService, LabelService labelService) {
     this.sessionRepository = sessionRepository;
     this.roleService = roleService;
+    this.labelService = labelService;
     checkSession();
   }
 
@@ -112,7 +113,8 @@ public class LocalSessionManager implements SessionManager {
       UserCredential credential = session.getCredential();
       User user = credential.getUser();
       List<Role> roleUsers = roleService.findRoleUsers(user.getId());
-      UserinfoDTO userinfo = new UserinfoDTO(session.getToken(),user.getType(), user.getState(),user.getOrganization(),user.getId(), user.getUsername(), user.getAvatar(), new UserinfoDTO.Credential(credential.getIdentifier(), credential.getIdentityType()), user.findPermissions(),roleUsers);
+      List<Label> labels = labelService.findLabelUsers(user.getId());
+      UserinfoDTO userinfo = new UserinfoDTO(session.getToken(), user.getType(), user.getState(), user.getOrganization(), user.getId(), user.getUsername(), user.getAvatar(), new UserinfoDTO.Credential(credential.getIdentifier(), credential.getIdentityType()), user.findPermissions(), roleUsers, labels);
       session.setData(JsonUtils.stringify(userinfo));
       sessionRepository.saveAndFlush(session);
     });

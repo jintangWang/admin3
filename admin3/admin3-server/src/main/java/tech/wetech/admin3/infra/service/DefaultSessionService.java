@@ -11,15 +11,15 @@ import tech.wetech.admin3.common.SessionItemHolder;
 import tech.wetech.admin3.sys.event.UserLoggedIn;
 import tech.wetech.admin3.sys.event.UserLoggedOut;
 import tech.wetech.admin3.sys.exception.UserException;
+import tech.wetech.admin3.sys.model.Label;
 import tech.wetech.admin3.sys.model.Role;
 import tech.wetech.admin3.sys.model.User;
 import tech.wetech.admin3.sys.model.UserCredential;
 import tech.wetech.admin3.sys.repository.UserCredentialRepository;
+import tech.wetech.admin3.sys.service.LabelService;
 import tech.wetech.admin3.sys.service.RoleService;
 import tech.wetech.admin3.sys.service.SessionService;
-import tech.wetech.admin3.sys.service.UserService;
 import tech.wetech.admin3.sys.service.dto.UserinfoDTO;
-import tech.wetech.admin3.sys.service.dto.UserinfoDTOV2;
 
 import java.util.List;
 import java.util.UUID;
@@ -38,7 +38,10 @@ public class DefaultSessionService implements SessionService {
 
   private final RoleService roleService;
 
-  public DefaultSessionService(UserCredentialRepository userCredentialRepository, SessionManager sessionManager, RoleService roleService) {
+  private final LabelService labelService;
+
+  public DefaultSessionService(UserCredentialRepository userCredentialRepository, SessionManager sessionManager, RoleService roleService, LabelService labelService) {
+    this.labelService = labelService;
     this.userCredentialRepository = userCredentialRepository;
     this.sessionManager = sessionManager;
     this.roleService = roleService;
@@ -56,7 +59,9 @@ public class DefaultSessionService implements SessionService {
       }
       String token = UUID.randomUUID().toString().replace("-", "");
       List<Role> roleUsers = roleService.findRoleUsers(user.getId());
-      UserinfoDTO userinfoEvent = new UserinfoDTO(token,user.getType(),user.getState(),user.getOrganization(), user.getId(), user.getUsername(), user.getAvatar(), new UserinfoDTO.Credential(credential.getIdentifier(), credential.getIdentityType()), user.findPermissions(),roleUsers);
+      List<Label> labels = labelService.findLabelUsers(user.getId());
+
+      UserinfoDTO userinfoEvent = new UserinfoDTO(token, user.getType(), user.getState(), user.getOrganization(), user.getId(), user.getUsername(), user.getAvatar(), new UserinfoDTO.Credential(credential.getIdentifier(), credential.getIdentityType()), user.findPermissions(), roleUsers,labels);
       sessionManager.store(token, credential, userinfoEvent);
       SessionItemHolder.setItem(Constants.SESSION_CURRENT_USER, userinfoEvent);
       DomainEventPublisher.instance().publish(new UserLoggedIn(userinfoEvent, getClientIP()));
