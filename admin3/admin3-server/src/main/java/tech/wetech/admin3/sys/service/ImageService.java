@@ -1,5 +1,6 @@
 package tech.wetech.admin3.sys.service;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,7 +72,7 @@ public class ImageService {
   }
 
 
-  public List<Image> findImages(Pageable pageable,List<Long> labelIds) {
+  public Page<Image> findImages(Pageable pageable, List<Long> labelIds) {
     return imageRepository.findImages(pageable,labelIds);
   }
 }

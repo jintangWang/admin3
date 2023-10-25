@@ -1,5 +1,6 @@
 package tech.wetech.admin3.sys.repository;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,5 +21,5 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
   Set<Image> findByIds(Set<Long> imageIds);
 
   @Query("select distinct r FROM Image r join r.labels u where u.id in(:labelIds) ORDER BY ?#{#pageable}")
-  List<Image> findImages(Pageable pageable, List<Long> labelIds);
+  Page<Image> findImages(Pageable pageable, List<Long> labelIds);
 }

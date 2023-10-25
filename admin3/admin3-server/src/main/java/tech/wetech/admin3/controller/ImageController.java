@@ -2,6 +2,7 @@ package tech.wetech.admin3.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +45,7 @@ public class ImageController {
   }
 
   @GetMapping("/getAllByLabelIds")
-  public ResponseEntity<List<Image>> findlabels(Pageable pageable, @RequestBody List<Long> labelIds) {
+  public ResponseEntity<Page<Image>> findlabels(Pageable pageable, @RequestBody List<Long> labelIds) {
     return ResponseEntity.ok(imageService.findImages(pageable,labelIds));
   }
 
