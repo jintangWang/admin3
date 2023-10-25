@@ -1,5 +1,6 @@
 package tech.wetech.admin3.sys.service;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.wetech.admin3.common.BusinessException;
@@ -10,6 +11,7 @@ import tech.wetech.admin3.sys.model.Label;
 import tech.wetech.admin3.sys.repository.ImageRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -69,4 +71,7 @@ public class ImageService {
   }
 
 
+  public List<Image> findImages(Pageable pageable,List<Long> labelIds) {
+    return imageRepository.findImages(pageable,labelIds);
+  }
 }

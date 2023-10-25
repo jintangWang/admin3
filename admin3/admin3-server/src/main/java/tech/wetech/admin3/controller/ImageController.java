@@ -2,6 +2,7 @@ package tech.wetech.admin3.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,7 @@ import tech.wetech.admin3.sys.model.Image;
 import tech.wetech.admin3.sys.model.Label;
 import tech.wetech.admin3.sys.service.ImageService;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -39,6 +41,11 @@ public class ImageController {
   public ResponseEntity<Void> deleteImage(@PathVariable Long ImageId) {
     imageService.deleteImageById(ImageId);
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("/getAllByLabelIds")
+  public ResponseEntity<List<Image>> findlabels(Pageable pageable, @RequestBody List<Long> labelIds) {
+    return ResponseEntity.ok(imageService.findImages(pageable,labelIds));
   }
 
 
