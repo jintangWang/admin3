@@ -45,8 +45,8 @@ public class ImageController {
   }
 
   @GetMapping("/getAllByLabelIds")
-  public ResponseEntity<Page<Image>> findlabels(Pageable pageable, @RequestBody List<Long> labelIds) {
-    return ResponseEntity.ok(imageService.findImages(pageable,labelIds));
+  public ResponseEntity<Page<Image>> findlabels(@RequestBody List<Long> labelIds) {
+    return ResponseEntity.ok(imageService.findImages(labelIds));
   }
 
 

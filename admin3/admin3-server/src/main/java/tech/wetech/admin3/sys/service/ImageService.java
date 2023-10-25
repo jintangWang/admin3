@@ -72,7 +72,7 @@ public class ImageService {
   }
 
 
-  public Page<Image> findImages(Pageable pageable, List<Long> labelIds) {
-    return imageRepository.findImages(pageable,labelIds);
+  public Page<Image> findImages(List<Long> labelIds) {
+    return imageRepository.findImages(labelIds);
   }
 }
