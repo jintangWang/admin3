@@ -30,6 +30,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
   @Query("select count(user.id) from User user where user.organization=:organization or user.organization.parentIds like concat(:orgParentIds, '%')")
   long countOrgUsers(Organization organization, String orgParentIds);
 
-  @Query("from User where username LIKE CONCAT('%',:username,'%')")
+  @Query("from User where username = :username")
   List<User> finduserByName(String username);
 }

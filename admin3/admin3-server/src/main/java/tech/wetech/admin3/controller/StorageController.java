@@ -100,18 +100,24 @@ public class StorageController {
 
   @PostMapping("/upload")
   public ResponseEntity<List<UploadResponse>> upload(@RequestParam(value = "storageId", required = false) String storageId,
-                                                     @RequestParam("files") MultipartFile[] files,
-                                                     @RequestBody Image image,
-                                                     @RequestBody User user) throws IOException {
+                                                     @RequestParam("files") MultipartFile[] files) throws IOException {
     List<UploadResponse> responses = new ArrayList<>();
     for (MultipartFile file : files) {
       String originalFilename = file.getOriginalFilename();
       String url = storageService.store(storageId, file.getInputStream(), file.getSize(), file.getContentType(), originalFilename);
-      imageService.createImage(image.getTitle(), image.getOverview(), image.getUrl(), image.getPosterPath(), image.getLabels());
-      userService.updateUserCount(user.getId());
       responses.add(new UploadResponse(url));
     }
     return ResponseEntity.ok(responses);
+  }
+
+
+  @PostMapping("/upload/imageSave")
+  public ResponseEntity<Image> upload(@RequestParam(value = "storageId", required = false) String storageId,
+                                      @RequestBody Image image,
+                                      @RequestBody User user) {
+    Image result = imageService.createImage(image.getTitle(), image.getOverview(), image.getUrl(), image.getPosterPath(), image.getLabels());
+    userService.updateUserCount(user.getId());
+    return ResponseEntity.ok(result);
   }
 
   @GetMapping("/fetch/{key:.+}")
