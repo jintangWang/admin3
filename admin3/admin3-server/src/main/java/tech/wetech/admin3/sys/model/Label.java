@@ -33,8 +33,22 @@ public class Label extends BaseEntity {
     joinColumns = @JoinColumn(name = "label_id", referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
   private Set<User> users = new LinkedHashSet<>();
+
+  @ManyToMany(fetch = FetchType.LAZY, cascade = DETACH)
+  @JoinTable(name = "label_image",
+    joinColumns = @JoinColumn(name = "label_id", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "image_id", referencedColumnName = "id"))
+  private Set<Image> images = new LinkedHashSet<>();
   public Label() {
 
+  }
+
+  public Set<Image> getImages() {
+    return images;
+  }
+
+  public void setImages(Set<Image> images) {
+    this.images = images;
   }
 
   public String getName() {
