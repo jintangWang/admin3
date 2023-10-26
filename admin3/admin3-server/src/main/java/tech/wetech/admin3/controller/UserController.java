@@ -42,7 +42,7 @@ public class UserController {
     return ResponseEntity.ok(userService.findUsers(pageable, user));
   }
 
-  @GetMapping("/{name}")
+  @GetMapping("/validate/{name}")
   public ResponseEntity<List<User>> findUsers(@PathVariable("name") String name) {
     return ResponseEntity.ok(userService.findUsersByName(name));
   }
