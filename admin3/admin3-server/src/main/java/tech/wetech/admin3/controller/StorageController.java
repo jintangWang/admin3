@@ -113,8 +113,9 @@ public class StorageController {
 
   @PostMapping("/upload/imageSave")
   public ResponseEntity<Image> upload(@RequestParam(value = "storageId", required = false) String storageId,
-                                      @RequestBody Image image,
-                                      @RequestBody User user) {
+                                      @RequestBody UploadResponseByUser uploadResponseByUser) {
+    User user = uploadResponseByUser.user();
+    Image image = uploadResponseByUser.image();
     Image result = imageService.createImage(image.getTitle(), image.getOverview(), image.getUrl(), image.getPosterPath(), image.getLabels());
     userService.updateUserCount(user.getId());
     return ResponseEntity.ok(result);
@@ -185,6 +186,9 @@ public class StorageController {
   }
 
   record UploadResponse(String url) {
+  }
+
+  record UploadResponseByUser(Image image, User user) {
   }
 
 }

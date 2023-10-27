@@ -35,7 +35,7 @@ public class User extends BaseEntity {
   @Column
   private String type;
 
-  @Column
+  @Column(columnDefinition = "int(11) default 0")
   private Long imageCount = 0L;
 
   @ManyToMany(fetch = LAZY, cascade = CascadeType.DETACH)
