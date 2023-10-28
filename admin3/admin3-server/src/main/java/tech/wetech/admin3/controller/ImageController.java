@@ -50,7 +50,7 @@ public class ImageController {
     return ResponseEntity.noContent().build();
   }
 
-  @GetMapping("/getAllByLabelIds")
+  @PostMapping("/getAllByLabelIds")
   public ResponseEntity<List<ImageDTO>> findlabels(@RequestBody List<Long> labelIds) {
     List<Image> images = imageService.findImages(labelIds);
     List<ImageDTO> result = new ArrayList<>();
