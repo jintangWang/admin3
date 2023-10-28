@@ -56,7 +56,7 @@ public class ImageController {
     List<ImageDTO> result = new ArrayList<>();
     for (Image image : images) {
       Set<Label> labelByImages = labelRepository.findLabelByImages(image.getId());
-      ImageDTO imageDTO = new ImageDTO(image.getTitle(),image.getOverview(),image.getUrl(),image.getCreatetime(),image.getIsVip(),image.getPosterPath(),labelByImages);
+      ImageDTO imageDTO = new ImageDTO(image.getId(),image.getTitle(),image.getOverview(),image.getUrl(),image.getCreatetime(),image.getIsVip(),image.getPosterPath(),labelByImages);
       result.add(imageDTO);
     }
     return ResponseEntity.ok(result);

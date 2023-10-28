@@ -11,6 +11,6 @@ import java.util.Set;
 /**
  * @author cjbi
  */
-public record ImageDTO(String title,String overview, String url,LocalDateTime createtime,boolean isVip,String posterPath,Set<Label> labels){
+public record ImageDTO(Long id,String title,String overview, String url,LocalDateTime createtime,boolean isVip,String posterPath,Set<Label> labels){
 
 }
