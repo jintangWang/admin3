@@ -74,6 +74,10 @@ public class ImageService {
 
 
   public List<Image> findImages(List<Long> labelIds) {
-    return imageRepository.findImages(labelIds);
+      if (CollectionUtils.isEmpty(labelIds)) {
+          return imageRepository.findAll();
+      } else {
+          return imageRepository.findImages(labelIds);
+      }
   }
 }
