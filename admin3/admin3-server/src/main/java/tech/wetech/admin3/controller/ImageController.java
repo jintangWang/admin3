@@ -33,7 +33,7 @@ public class ImageController {
     return new ResponseEntity<>(imageService.createImage(request.title(), request.overview(), request.url(), request.posterPath(), request.labels(),false), HttpStatus.CREATED);
   }
 
-  @PutMapping("/{ImageId}")
+  @PutMapping("/{imageId}")
   public ResponseEntity<Image> updateImage(@PathVariable Long imageId, @RequestBody @Valid ImageRequest request) {
     return ResponseEntity.ok(imageService.updateImage(imageId, request.title(), request.overview(), request.url(), request.posterPath(), request.labels()));
   }
