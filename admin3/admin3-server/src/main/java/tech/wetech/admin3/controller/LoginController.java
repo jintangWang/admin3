@@ -74,9 +74,9 @@ public class LoginController {
     Organization organization = new Organization();
     organization.setId(1L);
     if(CollectionUtils.isEmpty(request.label())){
-      userService.createUser(request.username(), null, User.Gender.MALE, User.State.NORMAL, organization, request.type());
+      userService.createUser(request.password(),request.username(), null, User.Gender.MALE, User.State.NORMAL, organization, request.type());
     }else{
-      userService.createUserLabel(request.username(), null, User.Gender.MALE, User.State.NORMAL, organization, request.type(),request.label());
+      userService.createUserLabel(request.password(),request.username(), null, User.Gender.MALE, User.State.NORMAL, organization, request.type(),request.label());
     }
 
     return new ResponseEntity<>(HttpStatus.CREATED);

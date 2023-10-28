@@ -14,6 +14,7 @@ import tech.wetech.admin3.sys.model.Label;
 import tech.wetech.admin3.sys.model.Organization;
 import tech.wetech.admin3.sys.model.User;
 import tech.wetech.admin3.sys.model.UserCredential;
+import tech.wetech.admin3.sys.repository.UserCredentialRepository;
 import tech.wetech.admin3.sys.repository.UserRepository;
 import tech.wetech.admin3.sys.service.dto.OrgUserDTO;
 import tech.wetech.admin3.sys.service.dto.PageDTO;
@@ -37,12 +38,15 @@ public class UserService {
 
   private final UserRepository userRepository;
 
-  public UserService(UserRepository userRepository) {
+  UserCredentialRepository userCredentialRepository;
+
+  public UserService(UserRepository userRepository,  UserCredentialRepository userCredentialRepository) {
     this.userRepository = userRepository;
+    this.userCredentialRepository = userCredentialRepository;
   }
 
   @Transactional
-  public User createUserLabel(String username, String avatar, User.Gender gender, User.State state, Organization organization, String type, Set<Label> labels) {
+  public User createUserLabel(String password,String username, String avatar, User.Gender gender, User.State state, Organization organization, String type, Set<Label> labels) {
     User user = new User();
     user.setUsername(username);
     user.setAvatar(avatar);
@@ -52,13 +56,26 @@ public class UserService {
     user.setOrganization(organization);
     user.setType(type);
     user.setLabels(labels);
+    UserCredential userCredential = new UserCredential();
+    userCredential.setIdentityType(UserCredential.IdentityType.PASSWORD);
+    userCredential.setIdentifier(username);
+    try {
+      userCredential.setCredential(SecurityUtil.md5(username, password));
+    } catch (NoSuchAlgorithmException e) {
+      throw new RuntimeException(e);
+    }
+    HashSet<UserCredential> objects = new HashSet<>();
+    objects.add(userCredential);
+    userCredential.setUser(user);
+    user.setCredentials(objects);
     user = userRepository.save(user);
+    userCredentialRepository.save(userCredential);
     DomainEventPublisher.instance().publish(new UserCreated(user));
     return user;
   }
 
   @Transactional
-  public User createUser(String username, String avatar, User.Gender gender, User.State state, Organization organization, String type) {
+  public User createUser(String password,String username, String avatar, User.Gender gender, User.State state, Organization organization, String type) {
     User user = new User();
     user.setUsername(username);
     user.setAvatar(avatar);
@@ -69,8 +86,10 @@ public class UserService {
     user.setType(type);
     UserCredential userCredential = new UserCredential();
     userCredential.setIdentityType(UserCredential.IdentityType.PASSWORD);
+    userCredential.setIdentifier(username);
+    userCredential.setUser(user);
     try {
-      userCredential.setCredential(SecurityUtil.md5(username, "123456"));
+      userCredential.setCredential(SecurityUtil.md5(username, password));
     } catch (NoSuchAlgorithmException e) {
       throw new RuntimeException(e);
     }
@@ -78,6 +97,7 @@ public class UserService {
     objects.add(userCredential);
     user.setCredentials(objects);
     user = userRepository.save(user);
+    userCredentialRepository.save(userCredential);
     DomainEventPublisher.instance().publish(new UserCreated(user));
     return user;
   }

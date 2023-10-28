@@ -53,9 +53,9 @@ public class UserController {
     Organization organization = organizationService.findOrganization(request.organizationId());
     User user = null;
     if (CollectionUtils.isEmpty(request.label())) {
-      user = userService.createUser(request.username(), null, User.Gender.MALE, User.State.NORMAL, organization, null);
+      user = userService.createUser("123456",request.username(), null, User.Gender.MALE, User.State.NORMAL, organization, null);
     } else {
-      user = userService.createUserLabel(request.username(), null, User.Gender.MALE, User.State.NORMAL, organization, null, request.label());
+      user = userService.createUserLabel("123456",request.username(), null, User.Gender.MALE, User.State.NORMAL, organization, null, request.label());
     }
     return new ResponseEntity<>(user,HttpStatus.CREATED);
   }
