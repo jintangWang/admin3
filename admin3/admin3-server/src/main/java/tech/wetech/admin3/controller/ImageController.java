@@ -50,6 +50,14 @@ public class ImageController {
     return ResponseEntity.noContent().build();
   }
 
+  @GetMapping("/{imageId}")
+  public ResponseEntity<ImageDTO> getImage(@PathVariable Long imageId) {
+    Image image = imageService.findImageById(imageId);
+    Set<Label> labelByImages = labelRepository.findLabelByImages(image.getId());
+    ImageDTO imageDTO = new ImageDTO(image.getId(),image.getTitle(),image.getOverview(),image.getUrl(),image.getCreatetime(),image.getIsVip(),image.getPosterPath(),labelByImages);
+    return ResponseEntity.ok(imageDTO);
+  }
+
   @PostMapping("/getAllByLabelIds")
   public ResponseEntity<List<ImageDTO>> findlabels(@RequestBody List<Long> labelIds) {
     List<Image> images = imageService.findImages(labelIds);
