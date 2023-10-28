@@ -5,11 +5,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import tech.wetech.admin3.sys.model.Image;
 import tech.wetech.admin3.sys.model.Label;
 import tech.wetech.admin3.sys.model.Role;
 import tech.wetech.admin3.sys.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author cjbi
@@ -22,5 +24,8 @@ public interface LabelRepository extends JpaRepository<Label, Long> {
 
   @Query("select distinct r FROM Label r join r.users u where u.id=:userId")
   List<Label> labelById(Long userId);
+
+  @Query("select distinct r FROM Label r join r.images i where i.id=:imageId")
+  Set<Label> findLabelByImages(Long imageId);
 
 }

@@ -9,8 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.wetech.admin3.sys.model.Image;
 import tech.wetech.admin3.sys.model.Label;
+import tech.wetech.admin3.sys.repository.LabelRepository;
 import tech.wetech.admin3.sys.service.ImageService;
+import tech.wetech.admin3.sys.service.dto.ImageDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -23,8 +26,11 @@ public class ImageController {
 
   private final ImageService imageService;
 
-  public ImageController(ImageService imageService) {
+  private final LabelRepository labelRepository;
+
+  public ImageController(ImageService imageService,LabelRepository labelRepository) {
     this.imageService = imageService;
+    this.labelRepository = labelRepository;
   }
 
 
@@ -45,8 +51,15 @@ public class ImageController {
   }
 
   @GetMapping("/getAllByLabelIds")
-  public ResponseEntity<List<Image>> findlabels(@RequestBody List<Long> labelIds) {
-    return ResponseEntity.ok(imageService.findImages(labelIds));
+  public ResponseEntity<List<ImageDTO>> findlabels(@RequestBody List<Long> labelIds) {
+    List<Image> images = imageService.findImages(labelIds);
+    List<ImageDTO> result = new ArrayList<>();
+    for (Image image : images) {
+      Set<Label> labelByImages = labelRepository.findLabelByImages(image.getId());
+      ImageDTO imageDTO = new ImageDTO(image.getTitle(),image.getOverview(),image.getUrl(),image.getCreatetime(),image.getIsVip(),image.getPosterPath(),labelByImages);
+      result.add(imageDTO);
+    }
+    return ResponseEntity.ok(result);
   }
 
 
