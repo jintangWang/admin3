@@ -129,13 +129,14 @@ public class UserService {
 
 
   @Transactional
-  public User updateUser(String type,Long userId, String avatar, User.Gender gender, User.State state, Organization organization) {
+  public User updateUser(String type,Long userId, String avatar, User.Gender gender, User.State state, Organization organization,Set<Label> labels) {
     User user = findUserById(userId);
     user.setAvatar(avatar);
     user.setGender(gender);
     user.setState(state);
     user.setOrganization(organization);
     user.setType(type);
+    user.setLabels(labels);
     user = userRepository.save(user);
     DomainEventPublisher.instance().publish(new UserUpdated(user));
     return user;
