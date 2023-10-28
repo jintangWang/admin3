@@ -13,12 +13,15 @@ import tech.wetech.admin3.sys.exception.UserException;
 import tech.wetech.admin3.sys.model.Label;
 import tech.wetech.admin3.sys.model.Organization;
 import tech.wetech.admin3.sys.model.User;
+import tech.wetech.admin3.sys.model.UserCredential;
 import tech.wetech.admin3.sys.repository.UserRepository;
 import tech.wetech.admin3.sys.service.dto.OrgUserDTO;
 import tech.wetech.admin3.sys.service.dto.PageDTO;
 import tech.wetech.admin3.sys.service.dto.UserinfoDTO;
 
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -64,6 +67,16 @@ public class UserService {
     user.setCreatedTime(LocalDateTime.now());
     user.setOrganization(organization);
     user.setType(type);
+    UserCredential userCredential = new UserCredential();
+    userCredential.setIdentityType(UserCredential.IdentityType.PASSWORD);
+    try {
+      userCredential.setCredential(SecurityUtil.md5(username, "123456"));
+    } catch (NoSuchAlgorithmException e) {
+      throw new RuntimeException(e);
+    }
+    HashSet<UserCredential> objects = new HashSet<>();
+    objects.add(userCredential);
+    user.setCredentials(objects);
     user = userRepository.save(user);
     DomainEventPublisher.instance().publish(new UserCreated(user));
     return user;
@@ -76,6 +89,10 @@ public class UserService {
   public User findUserById(Long userId) {
     return userRepository.findById(userId)
       .orElseThrow(() -> new BusinessException(RECORD_NOT_EXIST));
+  }
+
+  public User findUserByUserName(String userName) {
+    return userRepository.finduserByName(userName).get(0);
   }
 
   public PageDTO<OrgUserDTO> findOrgUsers(Pageable pageable, String username, User.State state, Organization organization) {
@@ -141,6 +158,12 @@ public class UserService {
   public void updateUserCount(Long userId) {
     User user = findUserById(userId);
     user.setImageCount(user.getImageCount()+1);
+    user = userRepository.save(user);
+  }
+
+  public void updateUser(User userById) {
+    User user = findUserById(userById.getId());
+    user.setCredentials(userById.getCredentials());
     user = userRepository.save(user);
   }
 }

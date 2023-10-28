@@ -51,7 +51,7 @@ public class User extends BaseEntity {
           inverseJoinColumns = @JoinColumn(name = "label_id", referencedColumnName = "id"))
   private Set<Label> labels = new LinkedHashSet<>();
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "id", orphanRemoval = true)
+  @OneToMany(mappedBy = "id")
   private Set<UserCredential> credentials = new LinkedHashSet<>();
 
   @OneToOne(fetch = LAZY)
