@@ -53,12 +53,13 @@ public class ImageService {
   }
 
   @Transactional
-  public Image updateImage(Long imageId, String title, String overview, String url,String posterPath, Set<Label> labels) {
+  public Image updateImage(Long imageId, String title, String overview, String url,String posterPath,boolean isVip,Set<Label> labels) {
     Image image = findImageById(imageId);
     image.setTitle(title);
     image.setUrl(url);
     image.setOverview(overview);
     image.setPosterPath(posterPath);
+    image.setVip(isVip);
     if(!CollectionUtils.isEmpty(labels)){
       image.setLabels(labels);
     }

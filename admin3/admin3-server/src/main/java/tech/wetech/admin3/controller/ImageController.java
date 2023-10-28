@@ -41,7 +41,7 @@ public class ImageController {
 
   @PutMapping("/{imageId}")
   public ResponseEntity<Image> updateImage(@PathVariable Long imageId, @RequestBody @Valid ImageRequest request) {
-    return ResponseEntity.ok(imageService.updateImage(imageId, request.title(), request.overview(), request.url(), request.posterPath(), request.labels()));
+    return ResponseEntity.ok(imageService.updateImage(imageId, request.title(), request.overview(), request.url(), request.posterPath(), request.isVip(), request.labels()));
   }
 
   @DeleteMapping("/{ImageId}")
@@ -63,7 +63,7 @@ public class ImageController {
   }
 
 
-  record ImageRequest(@NotBlank String title, String overview, String url, String posterPath, Set<Label> labels) {
+  record ImageRequest(@NotBlank String title, String overview, String url, String posterPath, boolean isVip, Set<Label> labels) {
 
   }
 
