@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * @author cjbi
  */
-public record UserinfoDTO(String token, String type, User.State state, Organization organization, Long userId, String username, String avatar,
+public record UserinfoDTO(Long imageCount,String token, String type, User.State state, Organization organization, Long userId, String username, String avatar,
                           Credential credential, Set<String> permissions, List<Role> roleList, List<Label> labels) implements Serializable {
 
   public record Credential(String identifier, UserCredential.IdentityType type) {
