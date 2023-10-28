@@ -116,7 +116,7 @@ public class StorageController {
                                       @RequestBody UploadResponseByUser uploadResponseByUser) {
     User user = uploadResponseByUser.user();
     Image image = uploadResponseByUser.image();
-    Image result = imageService.createImage(image.getTitle(), image.getOverview(), image.getUrl(), image.getPosterPath(), image.getLabels());
+    Image result = imageService.createImage(image.getTitle(), image.getOverview(), image.getUrl(), image.getPosterPath(), image.getLabels(),image.getIsVip());
     userService.updateUserCount(user.getId());
     return ResponseEntity.ok(result);
   }

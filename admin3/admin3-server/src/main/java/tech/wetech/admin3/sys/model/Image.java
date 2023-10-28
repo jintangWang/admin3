@@ -28,8 +28,8 @@ public class Image extends BaseEntity {
 
   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
   @JoinTable(name = "label_image",
-    joinColumns = @JoinColumn(name = "label_id", referencedColumnName = "id"),
-    inverseJoinColumns = @JoinColumn(name = "image_id", referencedColumnName = "id"))
+    joinColumns = @JoinColumn(name = "image_id", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "label_id", referencedColumnName = "id"))
   private Set<Label> labels = new LinkedHashSet<>();
 
 

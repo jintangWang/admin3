@@ -37,13 +37,14 @@ public class ImageService {
   }
 
   @Transactional
-  public Image createImage(String title, String overview, String url, String posterPath, Set<Label> labels) {
+  public Image createImage(String title, String overview, String url, String posterPath, Set<Label> labels,boolean isVip) {
     Image image = new Image();
     image.setTitle(title);
     image.setCreatetime(LocalDateTime.now());
     image.setUrl(url);
     image.setOverview(overview);
     image.setPosterPath(posterPath);
+    image.setVip(isVip);
     if(!CollectionUtils.isEmpty(labels)){
       image.setLabels(labels);
     }

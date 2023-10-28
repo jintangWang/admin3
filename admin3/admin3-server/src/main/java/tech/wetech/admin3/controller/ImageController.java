@@ -30,7 +30,7 @@ public class ImageController {
 
   @PostMapping
   public ResponseEntity<Image> createImage(@RequestBody @Valid ImageRequest request) {
-    return new ResponseEntity<>(imageService.createImage(request.title(), request.overview(), request.url(), request.posterPath(), request.labels()), HttpStatus.CREATED);
+    return new ResponseEntity<>(imageService.createImage(request.title(), request.overview(), request.url(), request.posterPath(), request.labels(),false), HttpStatus.CREATED);
   }
 
   @PutMapping("/{ImageId}")
