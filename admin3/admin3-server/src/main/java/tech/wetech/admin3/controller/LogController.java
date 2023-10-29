@@ -33,7 +33,7 @@ public class LogController {
   }
 
   @GetMapping
-  @RequiresPermissions("log:view")
+//  @RequiresPermissions("log:view")
   public ResponseEntity<PageDTO<LogDTO>> findLogs(Pageable pageable, String typeNames) {
     Set<String> typeNameSet = ofNullable(typeNames).stream()
       .flatMap(t -> Arrays.stream(t.split(",")))

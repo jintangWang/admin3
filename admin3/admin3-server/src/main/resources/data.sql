@@ -2,22 +2,10 @@
 set foreign_key_checks = 0;
 
 INSERT INTO user (id, username, avatar, created_time, gender, state, organization_id) VALUES (1, 'admin', 'avatar.jpg', '2023-01-05 17:16:11.000000', 0, 0, 1);
-INSERT INTO user (id, username, avatar, created_time, gender, state, organization_id) VALUES (2, 'employee', 'avatar.jpg', '2023-01-05 17:16:11.000000', 1, 0, 3);
-INSERT INTO user (id, username, avatar, created_time, gender, state, organization_id) VALUES (3, 'guest', 'avatar.jpg', '2023-01-05 17:16:11.000000', 0, 0, 3);
-INSERT INTO user (id, username, avatar, created_time, gender, state, organization_id) VALUES (202, '呼保义宋江 ', 'avatar.jpg', '2023-01-05 17:16:11.000000', 0, 0, 2);
-INSERT INTO user (id, username, avatar, created_time, gender, state, organization_id) VALUES (203, '玉麒麟卢俊义', 'avatar.jpg', '2023-01-05 17:16:11.000000', 0, 0, 2);
-INSERT INTO user (id, username, avatar, created_time, gender, state, organization_id) VALUES (204, '智多星吴用', 'avatar.jpg', '2023-01-05 17:16:11.000000', 0, 0, 2);
-INSERT INTO user (id, username, avatar, created_time, gender, state, organization_id) VALUES (205, '入云龙公孙胜', 'avatar.jpg', '2023-01-05 17:16:11.000000', 0, 0, 2);
-INSERT INTO user (id, username, avatar, created_time, gender, state, organization_id) VALUES (206, '大刀关胜', 'avatar.jpg', '2023-01-05 17:16:11.000000', 0, 0, 2);
-INSERT INTO user (id, username, avatar, created_time, gender, state, organization_id) VALUES (207, '豹子头林冲', 'avatar.jpg', '2023-01-05 17:16:11.000000', 0, 0, 2);
-INSERT INTO user (id, username, avatar, created_time, gender, state, organization_id) VALUES (208, '霹雳火秦明', 'avatar.jpg', '2023-01-05 17:16:11.000000', 0, 0, 2);
-INSERT INTO user (id, username, avatar, created_time, gender, state, organization_id) VALUES (209, '双鞭呼延灼', 'avatar.jpg', '2023-01-05 17:16:11.000000', 0, 1, 2);
-INSERT INTO user (id, username, avatar, created_time, gender, state, organization_id) VALUES (210, '小李广花荣', 'avatar.jpg', '2023-01-05 17:16:11.000000', 0, 1, 2);
-INSERT INTO user (id, username, avatar, created_time, gender, state, organization_id) VALUES (211, '小旋风柴进', 'avatar.jpg', '2023-01-05 17:16:11.000000', 0, 1, 2);
+INSERT INTO user (id, username, avatar, created_time, gender, state, organization_id) VALUES (2, 'vip', 'avatar.jpg', '2023-01-05 17:16:11.000000', 1, 0, 3);
 
 INSERT INTO user_credential (id, credential, identifier, identity_type, user_id) VALUES (1, 'a66abb5684c45962d887564f08346e8d', 'admin', 0, 1);
-INSERT INTO user_credential (id, credential, identifier, identity_type, user_id) VALUES (2, '9c0967753a201ecde21ef29efa514761', 'employee', 0, 2);
-INSERT INTO user_credential (id, credential, identifier, identity_type, user_id) VALUES (3, 'fe4ceeb01d43a6c29d8f4fe93313c6c1', 'guest', 0, 3);
+INSERT INTO user_credential (id, credential, identifier, identity_type, user_id) VALUES (2, 'a66abb5684c45962d887564f08346e8d', 'vip', 0, 2);
 
 INSERT INTO organization (id, name, parent_ids, type, parent_id) VALUES (0, '根节点', '/', 0, null);
 INSERT INTO organization (id, name, parent_ids, type, parent_id) VALUES (1, '管理员', '/1/', 0, 1);
@@ -32,17 +20,6 @@ INSERT INTO role (id, available, description, name) VALUES (4, false, '只能查
 
 INSERT INTO user_role (user_id, role_id) VALUES (1, 1);
 INSERT INTO user_role (user_id, role_id) VALUES (2, 2);
-INSERT INTO user_role (user_id, role_id) VALUES (3, 4);
-INSERT INTO user_role (user_id, role_id) VALUES (202, 2);
-INSERT INTO user_role (user_id, role_id) VALUES (203, 3);
-INSERT INTO user_role (user_id, role_id) VALUES (204, 3);
-INSERT INTO user_role (user_id, role_id) VALUES (205, 3);
-INSERT INTO user_role (user_id, role_id) VALUES (206, 3);
-INSERT INTO user_role (user_id, role_id) VALUES (207, 3);
-INSERT INTO user_role (user_id, role_id) VALUES (208, 3);
-INSERT INTO user_role (user_id, role_id) VALUES (209, 3);
-INSERT INTO user_role (user_id, role_id) VALUES (210, 3);
-INSERT INTO user_role (user_id, role_id) VALUES (211, 3);
 
 
 INSERT INTO resource (id, icon, name, parent_ids, permission, type, url, parent_id) VALUES (1, null, '根节点', null, '*', null, null, null);
