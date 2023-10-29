@@ -4,21 +4,30 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.wetech.admin3.common.CollectionUtils;
+import tech.wetech.admin3.common.CommonResultStatus;
 import tech.wetech.admin3.common.authz.RequiresPermissions;
-import tech.wetech.admin3.sys.model.Label;
-import tech.wetech.admin3.sys.model.Organization;
-import tech.wetech.admin3.sys.model.User;
+import tech.wetech.admin3.sys.exception.UserException;
+import tech.wetech.admin3.sys.model.*;
+import tech.wetech.admin3.sys.repository.UserCredentialRepository;
+import tech.wetech.admin3.sys.service.LabelService;
 import tech.wetech.admin3.sys.service.OrganizationService;
+import tech.wetech.admin3.sys.service.RoleService;
 import tech.wetech.admin3.sys.service.UserService;
 import tech.wetech.admin3.sys.service.dto.PageDTO;
+import tech.wetech.admin3.sys.service.dto.UserinfoDTO;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static tech.wetech.admin3.sys.model.UserCredential.IdentityType.PASSWORD;
 
 /**
  * @author cjbi
@@ -31,9 +40,18 @@ public class UserController {
   private final OrganizationService organizationService;
   private final UserService userService;
 
-  public UserController(OrganizationService organizationService, UserService userService) {
+  private final LabelService labelService;
+
+  @Autowired
+  private UserCredentialRepository userCredentialRepository;
+
+  @Autowired
+  private RoleService roleService;
+
+  public UserController(LabelService labelService,OrganizationService organizationService, UserService userService) {
     this.organizationService = organizationService;
     this.userService = userService;
+    this.labelService = labelService;
   }
 
   @RequiresPermissions("user:view")
@@ -45,6 +63,15 @@ public class UserController {
   @GetMapping("/validate/{name}")
   public ResponseEntity<List<User>> findUsers(@PathVariable("name") String name) {
     return ResponseEntity.ok(userService.findUsersByName(name));
+  }
+
+  @GetMapping("/userById/{id}")
+  public ResponseEntity<UserinfoDTO> findUsersById(@PathVariable("id") Long id) {
+    User user = userService.findUserById(id);
+    UserCredential credential = userCredentialRepository.findCredential(user.getUsername(), PASSWORD)
+      .orElseThrow(() -> new UserException(CommonResultStatus.UNAUTHORIZED, "密码不正确"));    List<Label> labelUsers = labelService.findLabelUsers(id);
+    List<Role> roleUsers = roleService.findRoleUsers(user.getId());
+    return ResponseEntity.ok(new UserinfoDTO(user.getGender(),user.getImageCount(),null, user.getType(), user.getState(), user.getOrganization(), user.getId(), user.getUsername(), user.getAvatar(), new UserinfoDTO.Credential(credential.getIdentifier(), credential.getIdentityType()), user.findPermissions(), roleUsers,labelUsers));
   }
 
   @RequiresPermissions("user:create")
