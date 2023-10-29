@@ -10,10 +10,7 @@ import tech.wetech.admin3.sys.event.UserCreated;
 import tech.wetech.admin3.sys.event.UserDeleted;
 import tech.wetech.admin3.sys.event.UserUpdated;
 import tech.wetech.admin3.sys.exception.UserException;
-import tech.wetech.admin3.sys.model.Label;
-import tech.wetech.admin3.sys.model.Organization;
-import tech.wetech.admin3.sys.model.User;
-import tech.wetech.admin3.sys.model.UserCredential;
+import tech.wetech.admin3.sys.model.*;
 import tech.wetech.admin3.sys.repository.UserCredentialRepository;
 import tech.wetech.admin3.sys.repository.UserRepository;
 import tech.wetech.admin3.sys.service.dto.OrgUserDTO;
@@ -84,6 +81,13 @@ public class UserService {
     user.setCreatedTime(LocalDateTime.now());
     user.setOrganization(organization);
     user.setType(type);
+    HashSet<Role> roles = new HashSet<>();
+
+    Role role = new Role();
+    role.setId(3L);
+    role.setAvailable(true);
+    roles.add(role);
+    user.setRoles(roles);
     UserCredential userCredential = new UserCredential();
     userCredential.setIdentityType(UserCredential.IdentityType.PASSWORD);
     userCredential.setIdentifier(username);
