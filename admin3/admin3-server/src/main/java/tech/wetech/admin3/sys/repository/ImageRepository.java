@@ -20,6 +20,6 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
   @Query("from Image where id in (:imageIds)")
   Set<Image> findByIds(Set<Long> imageIds);
 
-  @Query("select distinct r FROM Image r left join r.labels u where u.id in(:labelIds) OR u.id is null")
-  List<Image> findImages(List<Long> labelIds);
+  @Query("select distinct r FROM Image r left join r.labels u where r.isVip =:isvip and u.id in(:labelIds) OR u.id is null")
+  List<Image> findImages(List<Long> labelIds,boolean isvip);
 }

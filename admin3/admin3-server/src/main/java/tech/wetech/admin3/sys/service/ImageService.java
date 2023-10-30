@@ -74,7 +74,7 @@ public class ImageService {
   }
 
 
-  public List<Image> findImages(List<Long> labelIds) {
-      return imageRepository.findImages(labelIds);
+  public List<Image> findImages(List<Long> labelIds,boolean isvip) {
+      return imageRepository.findImages(labelIds,isvip);
   }
 }

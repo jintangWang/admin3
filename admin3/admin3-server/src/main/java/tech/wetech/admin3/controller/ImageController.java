@@ -59,8 +59,8 @@ public class ImageController {
   }
 
   @PostMapping("/getAllByLabelIds")
-  public ResponseEntity<List<ImageDTO>> findlabels(@RequestBody List<Long> labelIds) {
-    List<Image> images = imageService.findImages(labelIds);
+  public ResponseEntity<List<ImageDTO>> findlabels(@RequestParam boolean isvip, @RequestBody List<Long> labelIds) {
+    List<Image> images = imageService.findImages(labelIds,isvip);
     List<ImageDTO> result = new ArrayList<>();
     for (Image image : images) {
       Set<Label> labelByImages = labelRepository.findLabelByImages(image.getId());
