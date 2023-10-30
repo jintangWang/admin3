@@ -2,10 +2,8 @@
 set foreign_key_checks = 0;
 
 INSERT INTO user (id, username, avatar, created_time, gender, state, organization_id) VALUES (1, 'admin', 'avatar.jpg', '2023-01-05 17:16:11.000000', 0, 0, 1);
-INSERT INTO user (id, username, avatar, created_time, gender, state, organization_id) VALUES (2, 'vip', 'avatar.jpg', '2023-01-05 17:16:11.000000', 1, 0, 3);
 
 INSERT INTO user_credential (id, credential, identifier, identity_type, user_id) VALUES (1, 'a66abb5684c45962d887564f08346e8d', 'admin', 0, 1);
-INSERT INTO user_credential (id, credential, identifier, identity_type, user_id) VALUES (2, 'a66abb5684c45962d887564f08346e8d', 'vip', 0, 2);
 
 INSERT INTO organization (id, name, parent_ids, type, parent_id) VALUES (0, '根节点', '/', 0, null);
 INSERT INTO organization (id, name, parent_ids, type, parent_id) VALUES (1, '管理员', '/1/', 0, 1);
