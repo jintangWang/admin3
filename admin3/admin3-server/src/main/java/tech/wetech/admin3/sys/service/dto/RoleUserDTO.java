@@ -14,7 +14,7 @@ public record RoleUserDTO(Long id,
                           String avatar,
                           User.Gender gender,
                           User.State state,
-                          Set<Role> roles,
+                          Role role,
                           LocalDateTime createdTime) {
 
 }
