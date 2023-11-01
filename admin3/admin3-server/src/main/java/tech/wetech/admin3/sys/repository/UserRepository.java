@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import tech.wetech.admin3.sys.model.Organization;
+import tech.wetech.admin3.sys.model.Role;
 import tech.wetech.admin3.sys.model.User;
 
 import java.util.List;
@@ -32,4 +33,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   @Query("from User where username = :username")
   List<User> finduserByName(String username);
+
+  @Query("select distinct r FROM Role r join r.users u where u.id=:userId")
+  List<Role> findRoleById(Long userId);
 }

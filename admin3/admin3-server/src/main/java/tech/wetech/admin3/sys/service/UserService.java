@@ -65,11 +65,12 @@ public class UserService {
     objects.add(userCredential);
     userCredential.setUser(user);
     user.setCredentials(objects);
-
+    Set<Role> objects1 = new HashSet<>();
     Role role = new Role();
     role.setId(3L);
     role.setAvailable(true);
-    user.setRoles(role);
+    objects1.add(role);
+    user.setRoles(objects1);
     user = userRepository.save(user);
     userCredentialRepository.save(userCredential);
     DomainEventPublisher.instance().publish(new UserCreated(user));
@@ -86,11 +87,12 @@ public class UserService {
     user.setCreatedTime(LocalDateTime.now());
     user.setOrganization(organization);
     user.setType(type);
-
+    HashSet<Role> objects1 = new HashSet<>();
     Role role = new Role();
     role.setId(3L);
     role.setAvailable(true);
-    user.setRoles(role);
+    objects1.add(role);
+    user.setRoles(objects1);
     UserCredential userCredential = new UserCredential();
     userCredential.setIdentityType(UserCredential.IdentityType.PASSWORD);
     userCredential.setIdentifier(username);

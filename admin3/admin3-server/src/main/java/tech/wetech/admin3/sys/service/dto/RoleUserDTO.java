@@ -4,6 +4,7 @@ import tech.wetech.admin3.sys.model.Role;
 import tech.wetech.admin3.sys.model.User;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -14,7 +15,7 @@ public record RoleUserDTO(Long id,
                           String avatar,
                           User.Gender gender,
                           User.State state,
-                          Role role,
+                          Set<Role> role,
                           LocalDateTime createdTime) {
 
 }

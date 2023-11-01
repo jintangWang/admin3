@@ -14,6 +14,7 @@ import tech.wetech.admin3.sys.model.Resource;
 import tech.wetech.admin3.sys.model.Role;
 import tech.wetech.admin3.sys.model.User;
 import tech.wetech.admin3.sys.repository.RoleRepository;
+import tech.wetech.admin3.sys.repository.UserRepository;
 import tech.wetech.admin3.sys.service.dto.PageDTO;
 import tech.wetech.admin3.sys.service.dto.RoleDTO;
 import tech.wetech.admin3.sys.service.dto.RoleUserDTO;
@@ -30,8 +31,11 @@ public class RoleService {
 
   private final RoleRepository roleRepository;
 
-  public RoleService(RoleRepository roleRepository) {
+  private final UserRepository userRepository;
+
+  public RoleService(RoleRepository roleRepository,UserRepository userRepository) {
     this.roleRepository = roleRepository;
+    this.userRepository = userRepository;
   }
 
   public List<RoleDTO> findRoles() {
@@ -102,7 +106,7 @@ public class RoleService {
   }
 
   public List<Role> findRoleUsers(Long userById) {
-    List<Role> roles = roleRepository.roleById(userById);
+    List<Role> roles = userRepository.findRoleById(userById);
     return roles;
   }
 
