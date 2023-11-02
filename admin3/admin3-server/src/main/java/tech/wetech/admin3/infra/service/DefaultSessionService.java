@@ -21,7 +21,9 @@ import tech.wetech.admin3.sys.service.RoleService;
 import tech.wetech.admin3.sys.service.SessionService;
 import tech.wetech.admin3.sys.service.dto.UserinfoDTO;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static tech.wetech.admin3.sys.model.UserCredential.IdentityType.PASSWORD;
@@ -58,7 +60,10 @@ public class DefaultSessionService implements SessionService {
         throw new UserException(CommonResultStatus.UNAUTHORIZED, "用户已经停用，请与管理员联系");
       }
       String token = UUID.randomUUID().toString().replace("-", "");
-      Role roleUsers = roleService.findRoleUsers(user.getId());
+      Role role = roleService.findRoleUsers(user.getId());
+      Set<Role> roleUsers = new HashSet<>() {{
+        add(role);
+      }};
       List<Label> labels = labelService.findLabelUsers(user.getId());
 
       UserinfoDTO userinfoEvent = new UserinfoDTO(user.getGender(),user.getImageCount(),token, user.getType(), user.getState(), user.getOrganization(), user.getId(), user.getUsername(), user.getAvatar(), new UserinfoDTO.Credential(credential.getIdentifier(), credential.getIdentityType()), user.findPermissions(), roleUsers,labels);

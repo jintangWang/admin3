@@ -16,7 +16,9 @@ import tech.wetech.admin3.sys.service.dto.UserinfoDTO;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -112,7 +114,10 @@ public class LocalSessionManager implements SessionManager {
     sessionRepository.findAllStream().forEach(session -> {
       UserCredential credential = session.getCredential();
       User user = credential.getUser();
-      Role roleUsers = roleService.findRoleUsers(user.getId());
+      Role role = roleService.findRoleUsers(user.getId());
+      Set<Role> roleUsers = new HashSet<>() {{
+        add(role);
+      }};
       List<Label> labels = labelService.findLabelUsers(user.getId());
       UserinfoDTO userinfo = new UserinfoDTO(user.getGender(),user.getImageCount(),session.getToken(), user.getType(), user.getState(), user.getOrganization(), user.getId(), user.getUsername(), user.getAvatar(), new UserinfoDTO.Credential(credential.getIdentifier(), credential.getIdentityType()), user.findPermissions(), roleUsers, labels);
       session.setData(JsonUtils.stringify(userinfo));

@@ -22,10 +22,7 @@ import tech.wetech.admin3.sys.service.UserService;
 import tech.wetech.admin3.sys.service.dto.PageDTO;
 import tech.wetech.admin3.sys.service.dto.UserinfoDTO;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static tech.wetech.admin3.sys.model.UserCredential.IdentityType.PASSWORD;
@@ -71,7 +68,10 @@ public class UserController {
     User user = userService.findUserById(id);
     UserCredential credential = userCredentialRepository.findCredential(user.getUsername(), PASSWORD)
       .orElseThrow(() -> new UserException(CommonResultStatus.UNAUTHORIZED, "密码不正确"));    List<Label> labelUsers = labelService.findLabelUsers(id);
-    Role roleUsers = roleService.findRoleUsers(user.getId());
+    Role role = roleService.findRoleUsers(user.getId());
+    Set<Role> roleUsers = new HashSet<>() {{
+      add(role);
+    }};
     return ResponseEntity.ok(new UserinfoDTO(user.getGender(),user.getImageCount(),null, user.getType(), user.getState(), user.getOrganization(), user.getId(), user.getUsername(), user.getAvatar(), new UserinfoDTO.Credential(credential.getIdentifier(), credential.getIdentityType()), user.findPermissions(), roleUsers,labelUsers));
   }
 
