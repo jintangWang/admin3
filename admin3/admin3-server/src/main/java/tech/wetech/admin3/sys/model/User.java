@@ -1,11 +1,10 @@
 package tech.wetech.admin3.sys.model;
 
 import jakarta.persistence.*;
+import tech.wetech.admin3.common.CollectionUtils;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static jakarta.persistence.FetchType.LAZY;
@@ -77,9 +76,18 @@ public class User extends BaseEntity {
    * @return
    */
   public Set<String> findPermissions() {
-    return roles.getResources().stream()
-      .map(Resource::getPermission)
-      .collect(Collectors.toSet());
+    if(Objects.nonNull(roles)){
+      Set<Resource> resources = roles.getResources();
+      if(CollectionUtils.isEmpty(resources)){
+        return new HashSet<>();
+      }
+      return resources.stream()
+        .map(Resource::getPermission)
+        .collect(Collectors.toSet());
+    }else{
+      return new HashSet<>();
+    }
+
   }
 
   public enum Gender {

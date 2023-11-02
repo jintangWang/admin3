@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.wetech.admin3.common.BusinessException;
+import tech.wetech.admin3.common.CollectionUtils;
 import tech.wetech.admin3.common.CommonResultStatus;
 import tech.wetech.admin3.common.DomainEventPublisher;
 import tech.wetech.admin3.sys.event.RoleCreated;
@@ -19,6 +20,7 @@ import tech.wetech.admin3.sys.service.dto.PageDTO;
 import tech.wetech.admin3.sys.service.dto.RoleDTO;
 import tech.wetech.admin3.sys.service.dto.RoleUserDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,12 +41,16 @@ public class RoleService {
   }
 
   public List<RoleDTO> findRoles() {
-    return roleRepository.findAll().stream().map(role -> new RoleDTO(
-        role.getId(),
-        role.getName(),
-        role.getDescription(),
-        role.getAvailable(),
-        role.getResources().stream().map(Resource::getId).toList())
+    return roleRepository.findAll().stream().map(role -> {
+          Set<Resource> resources = role.getResources();
+          return new RoleDTO(
+              role.getId(),
+              role.getName(),
+              role.getDescription(),
+              role.getAvailable(),
+            CollectionUtils.isEmpty(resources)?new ArrayList<>():
+              resources.stream().map(Resource::getId).toList());
+        }
       )
       .toList();
   }
