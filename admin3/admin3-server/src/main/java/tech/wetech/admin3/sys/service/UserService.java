@@ -185,7 +185,9 @@ public class UserService {
     User user = findUserById(userId);
     user.setImageCount(user.getImageCount()+1);
     user = userRepository.save(user);
-    userRepository.updateRole(2L,userId);
+    if(user.getImageCount()>=5){
+      userRepository.updateRole(2L,userId);
+    }
   }
 
   public void updateUser(User userById) {
