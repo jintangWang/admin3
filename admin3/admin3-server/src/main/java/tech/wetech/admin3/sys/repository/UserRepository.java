@@ -35,5 +35,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
   List<User> finduserByName(String username);
 
   @Query("select distinct r FROM Role r join r.users u where u.id=:userId")
-  List<Role> findRoleById(Long userId);
+  Role findRoleById(Long userId);
 }

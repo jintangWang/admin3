@@ -70,7 +70,7 @@ public class UserController {
     User user = userService.findUserById(id);
     UserCredential credential = userCredentialRepository.findCredential(user.getUsername(), PASSWORD)
       .orElseThrow(() -> new UserException(CommonResultStatus.UNAUTHORIZED, "密码不正确"));    List<Label> labelUsers = labelService.findLabelUsers(id);
-    List<Role> roleUsers = roleService.findRoleUsers(user.getId());
+    Role roleUsers = roleService.findRoleUsers(user.getId());
     return ResponseEntity.ok(new UserinfoDTO(user.getGender(),user.getImageCount(),null, user.getType(), user.getState(), user.getOrganization(), user.getId(), user.getUsername(), user.getAvatar(), new UserinfoDTO.Credential(credential.getIdentifier(), credential.getIdentityType()), user.findPermissions(), roleUsers,labelUsers));
   }
 

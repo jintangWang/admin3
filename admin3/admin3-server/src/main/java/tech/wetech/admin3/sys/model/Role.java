@@ -28,7 +28,7 @@ public class Role extends BaseEntity {
     inverseJoinColumns = @JoinColumn(name = "resource_id", referencedColumnName = "id"))
   private Set<Resource> resources = new LinkedHashSet<>();
 
-  @OneToMany
+  @OneToMany(mappedBy="roles")
   private Set<User> users = new LinkedHashSet<>();
 
   public Role() {

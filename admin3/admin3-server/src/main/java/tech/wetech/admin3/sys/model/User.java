@@ -39,6 +39,7 @@ public class User extends BaseEntity {
   private Long imageCount = 0L;
 
   @ManyToOne
+  @JoinColumn(name="role_id")
   private Role roles;
 
 
