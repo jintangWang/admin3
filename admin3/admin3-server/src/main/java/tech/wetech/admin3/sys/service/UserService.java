@@ -190,7 +190,7 @@ public class UserService {
     if(user.getImageCount()>=5){
       HashSet<Role> objects1 = new HashSet<>();
       Role role = new Role();
-      role.setId(3L);
+      role.setId(2L);
       role.setAvailable(true);
       objects1.add(role);
       user.setRoles(objects1);
