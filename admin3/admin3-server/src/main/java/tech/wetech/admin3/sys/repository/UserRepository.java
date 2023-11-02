@@ -3,8 +3,10 @@ package tech.wetech.admin3.sys.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import tech.wetech.admin3.sys.model.Organization;
 import tech.wetech.admin3.sys.model.Role;
 import tech.wetech.admin3.sys.model.User;
@@ -36,4 +38,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   @Query("select distinct r FROM Role r join r.users u where u.id=:userId")
   Role findRoleById(Long userId);
+
+  @Query("Update User u set u.roles.id =:roleId where u.id =:userid")
+  @Modifying
+  @Transactional
+  void updateRole(Long roleId, Long userid );
 }

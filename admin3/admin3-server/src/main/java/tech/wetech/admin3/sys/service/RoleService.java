@@ -22,6 +22,7 @@ import tech.wetech.admin3.sys.service.dto.RoleUserDTO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -79,11 +80,9 @@ public class RoleService {
   }
 
   public Role changeUsers(Long roleId, Set<User> users) {
-    Role role = findRoleById(roleId);
-    role.setUsers(users);
-    role = roleRepository.save(role);
-    DomainEventPublisher.instance().publish(new RoleUpdated(role));
-    return role;
+    Optional<Role> byId = roleRepository.findById(roleId);
+    users.forEach(p->userRepository.updateRole(roleId,p.getId()));
+    return byId.get();
   }
 
   @Transactional
