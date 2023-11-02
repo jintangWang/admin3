@@ -25,4 +25,7 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
 
   @Query("select distinct r FROM Image r left join r.labels u where r.isVip =:isvip and u.id is null")
   List<Image> findImagesLableIsNull(boolean isvip);
+
+  @Query("select distinct r FROM Image r left join r.labels u where u.id in(:labelIds) or u.id is null")
+  List<Image> findVipImages(List<Long> labelIds);
 }

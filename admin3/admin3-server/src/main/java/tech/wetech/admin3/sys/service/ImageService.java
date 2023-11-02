@@ -77,7 +77,12 @@ public class ImageService {
   public List<Image> findImages(List<Long> labelIds,boolean isvip) {
     List<Image> imagesLableIsNull = imageRepository.findImagesLableIsNull(isvip);
     List<Image> images = imageRepository.findImages(labelIds, isvip);
-    imagesLableIsNull.addAll(images);
-    return imagesLableIsNull;
+    if (isvip) {
+      List<Image> vipImages = imageRepository.findVipImages(labelIds);
+      return vipImages;
+    } else {
+      imagesLableIsNull.addAll(images);
+      return imagesLableIsNull;
+    }
   }
 }
