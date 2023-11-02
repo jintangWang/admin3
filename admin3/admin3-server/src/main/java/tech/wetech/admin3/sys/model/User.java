@@ -38,11 +38,8 @@ public class User extends BaseEntity {
   @Column(columnDefinition = "int(11) default 0")
   private Long imageCount = 0L;
 
-  @ManyToMany(fetch = LAZY, cascade = CascadeType.DETACH)
-  @JoinTable(name = "user_role",
-    joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-    inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-  private Set<Role> roles = new LinkedHashSet<>();
+  @ManyToOne
+  private Role roles;
 
 
   @ManyToMany(fetch = LAZY, cascade = CascadeType.DETACH)
@@ -79,9 +76,7 @@ public class User extends BaseEntity {
    * @return
    */
   public Set<String> findPermissions() {
-    return roles.stream()
-      .map(Role::getResources)
-      .flatMap(Collection::stream)
+    return roles.getResources().stream()
       .map(Resource::getPermission)
       .collect(Collectors.toSet());
   }
@@ -139,11 +134,11 @@ public class User extends BaseEntity {
     this.createdTime = createdTime;
   }
 
-  public Set<Role> getRoles() {
+  public Role getRoles() {
     return roles;
   }
 
-  public void setRoles(Set<Role> roles) {
+  public void setRoles(Role roles) {
     this.roles = roles;
   }
 

@@ -65,12 +65,10 @@ public class UserService {
     objects.add(userCredential);
     userCredential.setUser(user);
     user.setCredentials(objects);
-    Set<Role> objects1 = new HashSet<>();
     Role role = new Role();
     role.setId(3L);
     role.setAvailable(true);
-    objects1.add(role);
-    user.setRoles(objects1);
+    user.setRoles(role);
     user = userRepository.save(user);
     userCredentialRepository.save(userCredential);
     DomainEventPublisher.instance().publish(new UserCreated(user));
@@ -87,12 +85,10 @@ public class UserService {
     user.setCreatedTime(LocalDateTime.now());
     user.setOrganization(organization);
     user.setType(type);
-    HashSet<Role> objects1 = new HashSet<>();
     Role role = new Role();
     role.setId(3L);
     role.setAvailable(true);
-    objects1.add(role);
-    user.setRoles(objects1);
+    user.setRoles(role);
     UserCredential userCredential = new UserCredential();
     userCredential.setIdentityType(UserCredential.IdentityType.PASSWORD);
     userCredential.setIdentifier(username);
@@ -188,12 +184,10 @@ public class UserService {
   public void updateUserCount(Long userId) {
     User user = findUserById(userId);
     if(user.getImageCount()>=5){
-      HashSet<Role> objects1 = new HashSet<>();
       Role role = new Role();
       role.setId(2L);
       role.setAvailable(true);
-      objects1.add(role);
-      user.setRoles(objects1);
+      user.setRoles(role);
     }
     user.setImageCount(user.getImageCount()+1);
     user = userRepository.save(user);
