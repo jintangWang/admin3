@@ -2,8 +2,10 @@
 set foreign_key_checks = 0;
 
 INSERT INTO user (id, username, avatar, created_time, gender, state, organization_id, role_id) VALUES (1, 'admin', 'avatar.jpg', '2023-01-05 17:16:11.000000', 0, 0, 1, 1);
+INSERT INTO user (id, username, avatar, created_time, gender, state, organization_id, role_id) VALUES (2, 'guest', 'avatar.jpg', '2023-01-05 17:16:11', 0, 0, 1, 4);
 
 INSERT INTO user_credential (id, credential, identifier, identity_type, user_id) VALUES (1, 'a66abb5684c45962d887564f08346e8d', 'admin', 0, 1);
+INSERT INTO user_credential (id, credential, identifier, identity_type, user_id) VALUES (2, 'fe4ceeb01d43a6c29d8f4fe93313c6c1', 'guest', 0, 2);
 
 INSERT INTO organization (id, name, parent_ids, type, parent_id) VALUES (0, '根节点', '/', 0, null);
 INSERT INTO organization (id, name, parent_ids, type, parent_id) VALUES (1, '管理员', '/1/', 0, 1);
@@ -17,7 +19,7 @@ INSERT INTO role (id, available, description, name) VALUES (3, true, '普通的�
 INSERT INTO role (id, available, description, name) VALUES (4, false, '只能查看的角色', '游客');
 
 INSERT INTO user_role (user_id, role_id) VALUES (1, 1);
-INSERT INTO user_role (user_id, role_id) VALUES (2, 2);
+INSERT INTO user_role (user_id, role_id) VALUES (2, 4);
 
 
 INSERT INTO resource (id, icon, name, parent_ids, permission, type, url, parent_id) VALUES (1, null, '根节点', null, '*', null, null, null);
