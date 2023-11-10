@@ -88,11 +88,10 @@ public class UserController {
     return new ResponseEntity<>(user,HttpStatus.CREATED);
   }
 
-  @RequiresPermissions("user:update")
   @PutMapping("/{userId}")
   public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody @Valid UpdateUserRequest request) {
     Organization organization = organizationService.findOrganization(request.organizationId());
-    return ResponseEntity.ok(userService.updateUser(request.type(), userId, request.avatar(), request.gender(), User.State.NORMAL, organization,request.label()));
+    return ResponseEntity.ok(userService.updateUser(request.role(),request.type(), userId, request.avatar(), request.gender(), User.State.NORMAL, organization,request.label()));
   }
 
   @RequiresPermissions("user:update")
@@ -119,7 +118,7 @@ public class UserController {
   }
 
   record UpdateUserRequest(@NotNull User.Gender gender,
-                           @NotBlank String avatar, Long organizationId, String type, Set<Label> label) {
+                           @NotBlank String avatar, Long organizationId, String type,Role role, Set<Label> label) {
   }
 
 }
