@@ -142,7 +142,6 @@ public class UserService {
     user.setOrganization(organization);
     user.setType(type);
     user.setLabels(labels);
-    user.setRoles(role);
     user = userRepository.save(user);
     DomainEventPublisher.instance().publish(new UserUpdated(user));
     return user;
